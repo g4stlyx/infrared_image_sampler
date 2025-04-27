@@ -3,11 +3,23 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
+import os
 
 def main():
     print("Use S to sample, Q to quit")
     
     file_prefix = input("File Name:\n")
+    
+    # Create output directory structure
+    out_dir = "out"
+    if not os.path.exists(out_dir):
+        os.mkdir(out_dir)
+        print(f"Created directory: {out_dir}")
+    
+    sample_dir = os.path.join(out_dir, file_prefix)
+    if not os.path.exists(sample_dir):
+        os.mkdir(sample_dir)
+        print(f"Created directory: {sample_dir}")
     
     # Ask user for temperature scaling factor (no need)
     scale_factor = 10.0  # Default scaling factor
@@ -99,8 +111,8 @@ def main():
             # Calculate normalized temperature by dividing by scale factor and rounding
             temperature = np.round(raw_temp / scale_factor).astype(int)
             
-            # Save only the normalized data
-            filename = f"{file_prefix}_{sample}.txt"
+            # Save only the normalized data with new directory structure
+            filename = os.path.join(sample_dir, f"{file_prefix}_{sample}.txt")
             
             print(f"Saving normalized data file: {filename}")
             with open(filename, 'w') as file:
